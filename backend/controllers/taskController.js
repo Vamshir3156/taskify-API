@@ -1,3 +1,4 @@
+// controllers/taskController.js
 const Task = require("../models/Task");
 
 // GET /api/tasks
@@ -16,12 +17,16 @@ exports.getTasks = async (req, res) => {
 // POST /api/tasks
 exports.createTask = async (req, res) => {
   try {
-    const { title, description = "" } = req.body;
-    if (!title) return res.status(400).json({ msg: "Title is required" });
+    const { title, description = "", status } = req.body;
+
+    if (!title || !title.trim()) {
+      return res.status(400).json({ msg: "Title is required" });
+    }
 
     const task = await Task.create({
-      title,
-      description,
+      title: title.trim(),
+      description: description || "",
+      status: status || "pending",
       user: req.user.id,
     });
 
@@ -37,8 +42,9 @@ exports.getTaskById = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
     if (!task) return res.status(404).json({ msg: "Task not found" });
-    if (task.user.toString() !== req.user.id)
+    if (task.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: "Not authorized" });
+    }
     return res.json(task);
   } catch (err) {
     console.error("getTaskById error:", err);
@@ -49,15 +55,35 @@ exports.getTaskById = async (req, res) => {
 // PUT /api/tasks/:id
 exports.updateTask = async (req, res) => {
   try {
-    let task = await Task.findById(req.params.id);
-    if (!task) return res.status(404).json({ msg: "Task not found" });
-    if (task.user.toString() !== req.user.id)
+    // Ensure the task exists and belongs to the user
+    const existing = await Task.findById(req.params.id);
+    if (!existing) return res.status(404).json({ msg: "Task not found" });
+    if (existing.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: "Not authorized" });
+    }
 
-    const fields = { title: req.body.title, description: req.body.description };
-    task = await Task.findByIdAndUpdate(req.params.id, fields, { new: true });
+    // Whitelist fields that can be updated
+    const allowed = ["title", "description", "status"];
+    const update = {};
+    for (const key of allowed) {
+      if (req.body[key] !== undefined) {
+        update[key] =
+          key === "title" && typeof req.body[key] === "string"
+            ? req.body[key].trim()
+            : req.body[key];
+      }
+    }
 
-    return res.json(task);
+    const updated = await Task.findByIdAndUpdate(
+      req.params.id,
+      { $set: update },
+      {
+        new: true, // ✅ return updated doc
+        runValidators: true, // enforce schema rules (e.g., status enum)
+      }
+    );
+
+    return res.json(updated);
   } catch (err) {
     console.error("updateTask error:", err);
     return res.status(500).send("Server Error");
@@ -69,8 +95,9 @@ exports.deleteTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
     if (!task) return res.status(404).json({ msg: "Task not found" });
-    if (task.user.toString() !== req.user.id)
+    if (task.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: "Not authorized" });
+    }
 
     await Task.findByIdAndDelete(req.params.id);
     return res.json({ msg: "Task removed" });

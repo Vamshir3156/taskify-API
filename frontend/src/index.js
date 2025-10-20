@@ -1,11 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./index.css"; // Often present for global styles
+import "./index.css";
+import "./App.css"; // keep this after index.css so overrides apply correctly
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
-    <App />
+    <div className="fade-in">
+      <App />
+    </div>
   </React.StrictMode>
 );

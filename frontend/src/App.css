@@ -1,155 +1,135 @@
-/* General App Styles */
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
-  background-color: #f4f7f6;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
+/* App.css — minimal, compatible with the new glass UI in index.css */
 
+/* Remove old global centering; the new layout handles this */
 .App {
-  width: 100%;
-  max-width: 600px;
-  margin: 20px;
+  all: unset;
 }
 
-/* Form Styles */
-.form-container {
-  background: white;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.form-container h2 {
-  margin-bottom: 25px;
-  color: #333;
-}
-
-.form-container input {
-  width: calc(100% - 20px);
-  padding: 12px 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-.form-container button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.form-container button:hover {
-  background-color: #0056b3;
-}
-
-.form-container p {
-  margin-top: 20px;
-  color: #555;
-}
-
-/* Dashboard Styles */
+/* Legacy class compatibility (so nothing breaks if some components still use them) */
+.form-container,
 .dashboard-container {
-  background: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+  color: var(--text);
+  padding: 24px;
 }
 
+/* Headings inside those containers */
+.form-container h2,
+.dashboard-header h1 {
+  margin: 0 0 12px 0;
+  color: var(--text);
+}
+
+/* Inputs & buttons in legacy forms map to new tokens */
+.form-container input,
+.task-form input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 12px;
+  border-radius: 12px;
+  outline: none;
+  transition: 0.18s ease;
+}
+.form-container input:focus,
+.task-form input:focus {
+  box-shadow: var(--ring);
+  border-color: rgba(147, 197, 253, 0.6);
+}
+
+.form-container button,
+.task-form button,
+.logout-btn,
+.delete-btn {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: 12px;
+  transition: 0.18s ease;
+  color: #051025;
+  background: linear-gradient(135deg, var(--primary), #4ade80);
+  box-shadow: 0 10px 22px rgba(110, 168, 255, 0.25);
+}
+.form-container button:hover,
+.task-form button:hover,
+.logout-btn:hover,
+.delete-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Logout as a “ghost” action */
+.logout-btn {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: none;
+}
+
+/* Delete as a subtle danger ghost */
+.delete-btn {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+/* Dashboard header compatibility */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
 }
 
-.dashboard-header h1 {
-  margin: 0;
-  color: #333;
-}
-
-.logout-btn {
-  padding: 8px 16px;
-  background-color: #c6081b;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-/* Task Form */
-.task-form {
-  display: flex;
-  margin-bottom: 20px;
-}
-
-.task-form input {
-  flex-grow: 1;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px 0 0 4px;
-  font-size: 16px;
-}
-
-.task-form button {
-  padding: 12px 20px;
-  border: none;
-  background-color: #0fdc3f;
-  color: white;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-/* Task List */
+/* Task list compatibility */
 .task-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
-  border-bottom: 1px solid #eee;
-  transition: background-color 0.2s;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  margin-bottom: 10px;
+  transition: 0.18s ease;
 }
-
-.task-item:last-child {
-  border-bottom: none;
+.task-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-1px);
 }
 
 .task-item span {
   cursor: pointer;
   flex-grow: 1;
+  color: var(--text);
 }
-
 .task-item.completed span {
   text-decoration: line-through;
-  color: #888;
+  color: #9fb1c9;
 }
 
-.delete-btn {
-  padding: 6px 12px;
-  background-color: #ce0a0a;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s;
+/* Subtle fade-in used across pages */
+.fade-in {
+  animation: fadeIn 0.24s ease-out both;
 }
-
-.task-item:hover .delete-btn {
-  opacity: 1;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
