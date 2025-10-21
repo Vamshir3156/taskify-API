@@ -126,13 +126,6 @@ const Login = () => {
               </Link>
             </div>
           </form>
-
-          <div style={{ marginTop: 14 }} className="helper">
-            Forgot your password?{" "}
-            <span className="mono" style={{ opacity: 0.85 }}>
-              (Add route later)
-            </span>
-          </div>
         </div>
       </div>
     </div>

@@ -231,12 +231,12 @@ const Dashboard = () => {
               <div className="grid cols-2">
                 <div className="task">
                   <div className="title">Total</div>
-                  <div className="badge" style={{ marginLeft: "auto" }}>
+                  <div className="badge total" style={{ marginLeft: "auto" }}>
                     {stats.total}
                   </div>
                 </div>
                 <div className="task">
-                  <div className="title">Completed</div>
+                  <div className="title">Done</div>
                   <div className="badge success" style={{ marginLeft: "auto" }}>
                     {stats.completed}
                   </div>
