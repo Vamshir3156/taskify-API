@@ -9,7 +9,6 @@ const Dashboard = () => {
   const [creating, setCreating] = useState(false);
   const [query, setQuery] = useState("");
 
-  // --- URL-driven filter: /?status=pending | /?status=completed | default=all
   const [searchParams, setSearchParams] = useSearchParams();
   const filterParam = searchParams.get("status");
   const filter =
@@ -46,13 +45,11 @@ const Dashboard = () => {
     }
   };
 
-  // Toggle status (optimistic + safe server merge)
   const handleToggleStatus = async (taskId) => {
     const current = tasks.find((t) => t._id === taskId);
     if (!current) return;
     const nextStatus = current.status === "pending" ? "completed" : "pending";
 
-    // optimistic UI
     setTasks((prev) =>
       prev.map((t) => (t._id === taskId ? { ...t, status: nextStatus } : t))
     );
@@ -64,7 +61,7 @@ const Dashboard = () => {
       }
     } catch (err) {
       console.error("Error toggling status:", err);
-      // rollback
+
       setTasks((prev) =>
         prev.map((t) =>
           t._id === taskId ? { ...t, status: current.status } : t
@@ -103,7 +100,6 @@ const Dashboard = () => {
 
   return (
     <div className="shell">
-      {/* Sidebar */}
       <aside className="sidebar">
         <div className="brand">
           <div className="brand-badge">T</div>
@@ -118,7 +114,7 @@ const Dashboard = () => {
               isActive && filter === "all" ? "active" : ""
             }
           >
-            🗂️ Dashboard
+            Dashboard
           </NavLink>
 
           <NavLink
@@ -127,7 +123,7 @@ const Dashboard = () => {
               isActive && filter === "completed" ? "active" : ""
             }
           >
-            ✅ Completed
+            Completed
           </NavLink>
 
           <NavLink
@@ -136,7 +132,7 @@ const Dashboard = () => {
               isActive && filter === "pending" ? "active" : ""
             }
           >
-            ⏳ Pending
+            Pending
           </NavLink>
 
           <span className="mono" style={{ opacity: 0.7, padding: "8px 12px" }}>
@@ -145,7 +141,6 @@ const Dashboard = () => {
         </nav>
       </aside>
 
-      {/* Topbar */}
       <header className="topbar">
         <div className="search">
           <input
@@ -179,10 +174,8 @@ const Dashboard = () => {
         </div>
       </header>
 
-      {/* Main content */}
       <main className="content">
         <div className="grid cols-3">
-          {/* Quick add */}
           <section className="card">
             <div className="card-header">
               <div className="card-title">Quick Add</div>
@@ -222,7 +215,6 @@ const Dashboard = () => {
             </div>
           </section>
 
-          {/* Stats */}
           <section className="card">
             <div className="card-header">
               <div className="card-title">Overview</div>
@@ -251,7 +243,6 @@ const Dashboard = () => {
             </div>
           </section>
 
-          {/* Tips */}
           <section className="card">
             <div className="card-header">
               <div className="card-title">Tips</div>
@@ -267,7 +258,6 @@ const Dashboard = () => {
           </section>
         </div>
 
-        {/* Tasks list */}
         <section className="card" style={{ marginTop: 16 }}>
           <div className="card-header">
             <div className="card-title">

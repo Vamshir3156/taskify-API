@@ -3,7 +3,10 @@ import { login } from "../services/api";
 import { Link } from "react-router-dom";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({
+    email: "demo@taskify.com",
+    password: "Demo@123",
+  });
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");

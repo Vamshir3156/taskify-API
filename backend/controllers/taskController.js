@@ -1,4 +1,3 @@
-// controllers/taskController.js
 const Task = require("../models/Task");
 
 // GET /api/tasks
@@ -55,14 +54,12 @@ exports.getTaskById = async (req, res) => {
 // PUT /api/tasks/:id
 exports.updateTask = async (req, res) => {
   try {
-    // Ensure the task exists and belongs to the user
     const existing = await Task.findById(req.params.id);
     if (!existing) return res.status(404).json({ msg: "Task not found" });
     if (existing.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: "Not authorized" });
     }
 
-    // Whitelist fields that can be updated
     const allowed = ["title", "description", "status"];
     const update = {};
     for (const key of allowed) {
@@ -78,8 +75,8 @@ exports.updateTask = async (req, res) => {
       req.params.id,
       { $set: update },
       {
-        new: true, // ✅ return updated doc
-        runValidators: true, // enforce schema rules (e.g., status enum)
+        new: true,
+        runValidators: true,
       }
     );
 

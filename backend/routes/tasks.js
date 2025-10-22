@@ -9,7 +9,7 @@ const {
   deleteTask,
 } = require("../controllers/taskController");
 
-router.use(auth); // all /api/tasks require JWT
+router.use(auth);
 
 router.get("/", getTasks);
 router.post("/", createTask);

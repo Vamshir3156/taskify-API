@@ -457,7 +457,6 @@ body {
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
 }
 
-/* === Color variations === */
 .badge.total {
   background: rgba(147, 197, 253, 0.15);
   color: #66a1e4;
@@ -474,11 +473,11 @@ body {
   border: 1px solid rgba(245, 158, 11, 0.35);
 }
 .card-body .grid .task {
-  overflow: hidden; /* clip anything that would spill */
-  padding-right: 18px; /* give the badge breathing room on the right */
+  overflow: hidden;
+  padding-right: 18px;
 }
 
 .card-body .grid .task .badge.count {
-  margin-right: 2px; /* nudge it in from the edge */
-  box-shadow: none; /* remove outer glow that can look like overflow */
+  margin-right: 2px;
+  box-shadow: none;
 }

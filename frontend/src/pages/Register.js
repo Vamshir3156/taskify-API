@@ -50,7 +50,7 @@ const Register = () => {
             </div>
           </div>
           <Link to="/login" className="btn btn-ghost">
-            Sign in
+            SignIn
           </Link>
         </div>
 
@@ -65,7 +65,7 @@ const Register = () => {
                 className="input"
                 type="text"
                 name="name"
-                placeholder="Vamshi R"
+                placeholder="Your name"
                 value={formData.name}
                 onChange={handleChange}
                 required
