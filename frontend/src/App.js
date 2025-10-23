@@ -159,7 +159,7 @@ export default function App() {
         </div>
 
         <div className="helper" style={{ color: "#9fb1c9", marginTop: 8 }}>
-          Checking <code>{HEALTH_URL}</code> every 2s.
+          This app uses a free backend that may sleep when idle.
         </div>
       </div>
     );
