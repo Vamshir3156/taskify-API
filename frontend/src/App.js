@@ -16,7 +16,6 @@ const API_BASE =
   "http://localhost:5000";
 
 const HEALTH_URL = `${API_BASE}/health`;
-
 const PROBE_EVERY_MS = 2000;
 
 export default function App() {
@@ -28,12 +27,13 @@ export default function App() {
   const [secondsLeft, setSecondsLeft] = useState(45);
   const [windowSecs, setWindowSecs] = useState(45);
 
+  const connectedRef = useRef(false);
+  const extendedRef = useRef(false);
   const mountedRef = useRef(false);
 
   useEffect(() => {
     mountedRef.current = true;
 
-    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     const probe = async () => {
       try {
         const res = await fetch(HEALTH_URL, {
@@ -46,49 +46,53 @@ export default function App() {
       }
     };
 
-    const run = async () => {
-      const upNow = await probe();
-      if (upNow && mountedRef.current) {
+    setIsWaiting(true);
+
+    probe().then((ok) => {
+      if (!mountedRef.current) return;
+      if (ok) {
+        connectedRef.current = true;
         setServerUp(true);
         setIsWaiting(false);
-        return;
       }
+    });
 
-      setIsWaiting(true);
-      let currentWindow = 45;
+    let countdown = setInterval(() => {
+      if (!mountedRef.current || connectedRef.current) return;
 
-      while (mountedRef.current) {
-        setWindowSecs(currentWindow);
-        setSecondsLeft(currentWindow);
-
-        let lastProbeAt = 0;
-
-        for (let s = currentWindow; s >= 5 && mountedRef.current; s--) {
-          setSecondsLeft(s);
-
-          const now = Date.now();
-          if (now - lastProbeAt >= PROBE_EVERY_MS) {
-            lastProbeAt = now;
-            const ok = await probe();
-            if (ok && mountedRef.current) {
-              setServerUp(true);
-              setIsWaiting(false);
-              return;
-            }
-          }
-
-          await sleep(1000);
+      setSecondsLeft((prev) => {
+        if (prev <= 5 && !extendedRef.current) {
+          extendedRef.current = true;
+          setWindowSecs((w) => w + 30);
+          setAttempt((a) => a + 1);
+          return prev + 30;
         }
 
-        setAttempt((a) => a + 1);
-        currentWindow = 30;
-      }
-    };
+        if (prev > 5 && extendedRef.current) {
+          extendedRef.current = false;
+        }
 
-    run();
+        return Math.max(0, prev - 1);
+      });
+    }, 1000);
+
+    let pinger = setInterval(async () => {
+      if (!mountedRef.current || connectedRef.current) return;
+      const ok = await probe();
+      if (ok) {
+        connectedRef.current = true;
+        setServerUp(true);
+        setIsWaiting(false);
+      }
+    }, PROBE_EVERY_MS);
+
+    setWindowSecs(45);
+    setSecondsLeft(45);
 
     return () => {
       mountedRef.current = false;
+      clearInterval(countdown);
+      clearInterval(pinger);
     };
   }, []);
 
@@ -112,10 +116,10 @@ export default function App() {
         }}
       >
         <div className="h2" style={{ color: "var(--text)" }}>
-          ⚡ Waking up the server Please wait :)
+          ⚡ Waking up the server… Please wait :)
         </div>
         <div className="helper" style={{ color: "#9fb1c9" }}>
-          (we’ll render as soon as it connects)
+          (We’ll render as soon as it connects)
         </div>
 
         <div
@@ -155,7 +159,7 @@ export default function App() {
         </div>
 
         <div className="helper" style={{ color: "#9fb1c9", marginTop: 8 }}>
-          This app uses a free backend that may sleep when idle.
+          Checking <code>{HEALTH_URL}</code> every 2s.
         </div>
       </div>
     );
