@@ -223,19 +223,29 @@ const Dashboard = () => {
               <div className="grid cols-2">
                 <div className="task">
                   <div className="title">Total</div>
-                  <div className="badge total" style={{ marginLeft: "auto" }}>
+
+                  <div
+                    className="badge count total"
+                    style={{ marginLeft: "auto" }}
+                  >
                     {stats.total}
                   </div>
                 </div>
                 <div className="task">
                   <div className="title">Done</div>
-                  <div className="badge success" style={{ marginLeft: "auto" }}>
+                  <div
+                    className="badge count success"
+                    style={{ marginLeft: "auto" }}
+                  >
                     {stats.completed}
                   </div>
                 </div>
                 <div className="task">
                   <div className="title">Pending</div>
-                  <div className="badge warning" style={{ marginLeft: "auto" }}>
+                  <div
+                    className="badge count warning"
+                    style={{ marginLeft: "auto" }}
+                  >
                     {stats.pending}
                   </div>
                 </div>
@@ -275,70 +285,72 @@ const Dashboard = () => {
                 No tasks found. Try changing your search or filter.
               </div>
             ) : (
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Task</th>
-                    <th>Status</th>
-                    <th className="mono">ID</th>
-                    <th style={{ width: 160 }}>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtered.map((task) => (
-                    <tr key={task._id}>
-                      <td>
-                        <button
-                          onClick={() => handleToggleStatus(task._id)}
-                          className="btn btn-ghost"
-                          style={{ padding: "8px 10px" }}
-                          title="Toggle status"
-                        >
-                          <span className="title">{task.title}</span>
-                        </button>
-                      </td>
-                      <td>
-                        <span
-                          className={
-                            "badge " +
-                            (task.status === "completed"
-                              ? "success"
-                              : task.status === "pending"
-                              ? "warning"
-                              : "")
-                          }
-                        >
-                          {task.status}
-                        </span>
-                      </td>
-                      <td className="mono" style={{ color: "#9fb1c9" }}>
-                        {task._id?.slice(-6)}
-                      </td>
-                      <td className="cell-actions">
-                        <button
-                          className="btn btn-primary"
-                          onClick={() => handleToggleStatus(task._id)}
-                        >
-                          {task.status === "completed"
-                            ? "Mark Pending"
-                            : "Mark Done"}
-                        </button>
-                        <button
-                          className="btn btn-ghost"
-                          onClick={() => handleDeleteTask(task._id)}
-                          style={{
-                            borderColor: "rgba(239,68,68,.35)",
-                            color: "#fca5a5",
-                          }}
-                          title="Delete task"
-                        >
-                          Delete
-                        </button>
-                      </td>
+              <div className="table-wrap">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Task</th>
+                      <th>Status</th>
+                      <th className="mono">ID</th>
+                      <th style={{ width: 160 }}>Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {filtered.map((task) => (
+                      <tr key={task._id}>
+                        <td>
+                          <button
+                            onClick={() => handleToggleStatus(task._id)}
+                            className="btn btn-ghost"
+                            style={{ padding: "8px 10px" }}
+                            title="Toggle status"
+                          >
+                            <span className="title">{task.title}</span>
+                          </button>
+                        </td>
+                        <td>
+                          <span
+                            className={
+                              "badge " +
+                              (task.status === "completed"
+                                ? "success"
+                                : task.status === "pending"
+                                ? "warning"
+                                : "")
+                            }
+                          >
+                            {task.status}
+                          </span>
+                        </td>
+                        <td className="mono" style={{ color: "#9fb1c9" }}>
+                          {task._id?.slice(-6)}
+                        </td>
+                        <td className="cell-actions">
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => handleToggleStatus(task._id)}
+                          >
+                            {task.status === "completed"
+                              ? "Mark Pending"
+                              : "Mark Done"}
+                          </button>
+                          <button
+                            className="btn btn-ghost"
+                            onClick={() => handleDeleteTask(task._id)}
+                            style={{
+                              borderColor: "rgba(239,68,68,.35)",
+                              color: "#fca5a5",
+                            }}
+                            title="Delete task"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         </section>
