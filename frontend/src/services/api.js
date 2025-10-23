@@ -2,14 +2,12 @@ import axios from "axios";
 
 const PROD_BASE = (process.env.REACT_APP_API_URL || "").replace(/\/$/, "");
 const LOCAL_BASE =
-  window.location.hostname === "localhost"
-    ? "http://localhost:5000/api"
-    : "/api";
+  window.location.hostname === "localhost" ? "http://localhost:5000" : "";
 
 const API_BASE = PROD_BASE || LOCAL_BASE;
-
+const AXIOS_BASE = API_BASE ? `${API_BASE}/api` : "/api";
 const API = axios.create({
-  baseURL: API_BASE,
+  baseURL: AXIOS_BASE,
 });
 
 API.interceptors.request.use((req) => {
