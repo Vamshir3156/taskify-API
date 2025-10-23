@@ -1,11 +1,7 @@
-/* App.css — minimal, compatible with the new glass UI in index.css */
-
-/* Remove old global centering; the new layout handles this */
 .App {
   all: unset;
 }
 
-/* Legacy class compatibility (so nothing breaks if some components still use them) */
 .form-container,
 .dashboard-container {
   background: linear-gradient(
@@ -20,14 +16,12 @@
   padding: 24px;
 }
 
-/* Headings inside those containers */
 .form-container h2,
 .dashboard-header h1 {
   margin: 0 0 12px 0;
   color: var(--text);
 }
 
-/* Inputs & buttons in legacy forms map to new tokens */
 .form-container input,
 .task-form input {
   width: 100%;
@@ -126,5 +120,49 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+.warmup-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(
+      1000px 600px at 20% -10%,
+      rgba(110, 168, 255, 0.18),
+      transparent 60%
+    ),
+    radial-gradient(
+      800px 600px at 120% 110%,
+      rgba(34, 197, 94, 0.12),
+      transparent 50%
+    ),
+    #0b1020;
+  z-index: 1000;
+}
+.warmup-card {
+  width: min(460px, 92vw);
+  padding: 24px 22px;
+  border-radius: 18px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  text-align: center;
+}
+
+.logo-spin {
+  animation: spin 3s linear infinite;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
